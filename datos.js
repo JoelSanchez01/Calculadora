@@ -6,6 +6,7 @@ const ArregloNodos = [...container.querySelectorAll('button')];
 
 const operaciones = [...container.querySelectorAll('div .operacion')];
 
+const igual = container.querySelector('#igual');
 
 //FILTRAR NODOS
 const NumBotones = ArregloNodos.filter((nodos) => {
@@ -29,6 +30,9 @@ borrar.addEventListener('click', () => {
 });
 
 
+igual.addEventListener('click', () =>{
+
+})
 
 
 //AGREGAR EVENTO A LOS NUMEROS NUMERO
@@ -36,37 +40,56 @@ NumBotones.forEach(boton => {
     boton.addEventListener('click', AgregarNumero);
 })
 
-let valor = [], operador = [];
+
+var anterior, actual, operador, calculo = 1;
 
 const Operacion = (event) => {
-    if (input.value == '') return alert('Cuadro Vacio!');
+    //if (input.value == '') return alert('Cuadro Vacio!');
     
-    valor.push(input.value);
-    input.value = '';
-    operador.push(event.target.innerText);
-
-    if (valor.length > 1){
+        if(anterior == null){ 
+            operador = event.target.innerText;
+            anterior = input.value;      
+            input.value = '';
+        }    
+        else {
+            actual = input.value;
         
-        switch (operador[0]) {
+            input.value = '';
+            
+            switch (operador) {
             case '+':
-                input.value = parseInt(valor[0]) + parseInt(valor[1]);
+                calculo = parseInt(anterior) + parseInt(actual);
+                input.value = '';
                 break;
             case '-':
-                input.value = parseInt(valor[0]) - parseInt(valor[1]);
+                calculo = parseInt(anterior) - parseInt(actual);
+                input.value = '';
                 break;
             case 'x':
-                input.value = parseInt(valor[0]) * parseInt(valor[1]);
-                breakl
+                calculo = parseInt(anterior) * parseInt(actual);
+                input.value = '';
+                break;
             case '/':
-                input.value = parseInt(valor[0]) / parseInt(valor[1]);
+                calculo = parseInt(anterior) / parseInt(actual);
+                input.value = '';
+                break;
+            case '=':
+                input.value = calculo;
+                anterior = null;
+                actual = null;
                 break;
         }
-        operador.shift();
-        valor.shift();
-        valor.shift();
-        valor.push(input.value);
+        input.value = calculo;
+        anterior = null;
+        actual = null;
     }
+    
+
+
 }
+
+
+
 
 operaciones.forEach(boton => {
     boton.addEventListener('click', Operacion);
